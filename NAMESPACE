@@ -1,0 +1,8 @@
+export(neat)
+export(networkmatrix)
+S3method(plot, neat)
+S3method(print, neat)
+S3method(summary, neat)
+importFrom("graphics", "abline", "hist", "legend", "par", "plot")
+importFrom("stats", "ecdf", "ks.test", "phyper")
+importFrom("utils", "head")
