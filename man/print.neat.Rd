@@ -18,6 +18,9 @@ Print method of \code{neat}
 \value{A dataframe showing the first \code{nrows} tests contained in a \code{neat} object.}
 \author{Mirko Signorelli}
 \seealso{\code{\link{neat}}, \code{\link{plot.neat}}, \code{\link{summary.neat}}}
+\references{
+Signorelli, M., Vinciotti, V., Wit, E. C. (2016). NEAT: an efficient network enrichment analysis test. ArXiv preprint, arXiv:1604.01210. Url: https://arxiv.org/abs/1604.01210.
+}
 \examples{
 A = matrix(0, nrow=7, ncol=7)
 A[1,c(2,3)]=1; A[2,c(5,7)]=1;A[3,c(1,4)]=1;A[4,c(2,5,7)]=1;A[6,c(2,5)]=1;A[7,4]=1

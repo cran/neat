@@ -1,0 +1,18 @@
+citHeader("To cite neat in publications use:")
+
+citEntry(entry = "Article",
+  title        = "NEAT: an efficient network enrichment analysis test",
+  author       = personList(as.person("M. Signorelli"),
+                   as.person("V. Vinciotti"),
+                   as.person("E. C. Wit")),
+  journal      = "ArXiv preprint ",
+  year         = "2016",
+  number       = "arXiv:1604.01210",
+  url          = "https://arxiv.org/pdf/1604.01210v2.pdf",
+
+  textVersion  =
+  paste("Signorelli, M., Vinciotti, V., Wit, E. C. (2016).",
+        "NEAT: an efficient network enrichment analysis test.",
+        "ArXiv preprint, arXiv:1604.01210.",
+        "URL https://arxiv.org/pdf/1604.01210v2.pdf")
+)

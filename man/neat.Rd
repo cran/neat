@@ -3,7 +3,7 @@
 \alias{pvalue}
 \alias{neatc}
 \title{Performs neat for lists of gene sets}
-\description{Compute network enrichment analysis (NEAT) from a first list of sets ('A sets') to a second list of sets ('B sets').}
+\description{Compute NEAT (Signorelli et al., 2016), a test for network enrichment analysis between/from a first list of sets ('A sets') and/to a second list of sets ('B sets').}
 \usage{
 neat(alist, blist = NULL, network, nettype, nodes, alpha = NULL, 
      anames = NULL, bnames = NULL)
@@ -28,7 +28,9 @@ neat(alist, blist = NULL, network, nettype, nodes, alpha = NULL,
 }
 \author{Mirko Signorelli}
 \seealso{\code{\link{networkmatrix}}, \code{\link{plot.neat}},  \code{\link{print.neat}}, \code{\link{summary.neat}}}
-
+\references{
+Signorelli, M., Vinciotti, V., Wit, E. C. (2016). NEAT: an efficient network enrichment analysis test. ArXiv preprint, arXiv:1604.01210. Url: https://arxiv.org/abs/1604.01210.
+}
 \examples{
 # Example 1: network given as adjacency matrix:
 A = matrix(0, nrow=7, ncol=7)
@@ -86,14 +88,16 @@ data(yeast)
 esr = list('ESR 1' = yeast$esr1, 'ESR 2' = yeast$esr2)
 test = neat(alist = esr, blist = yeast$goslimproc, network = yeast$yeastnet,
             nettype = 'undirected', nodes = yeast$ynetgenes, alpha = 0.01)
+# Replace with "blist = yeast$kegg" to use kegg pathways
 
-test1 = test[1:99,]
+m = dim(test)[1]
+test1 = test[1:(m/2),]
 table(test1$conclusion)
 plot(test1)
 o1=test1[test1$conclusion=='Overenrichment',]
 print(o1, nrows='ALL') #display overenrichments
 
-test2 = test[100:198,]
+test2 = test[(m/2+1):m,]
 table(test2$conclusion)
 plot(test2)
 o2=test2[test2$conclusion=='Overenrichment',]

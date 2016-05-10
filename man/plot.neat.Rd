@@ -19,6 +19,9 @@ Plot method of \code{neat}
 An histogram showing the distribution of p-values and a p-p plot comparing the distribution of p-values to the uniform distribution.}
 \author{Mirko Signorelli}
 \seealso{\code{\link{neat}}, \code{\link{print.neat}}, \code{\link{summary.neat}}}
+\references{
+Signorelli, M., Vinciotti, V., Wit, E. C. (2016). NEAT: an efficient network enrichment analysis test. ArXiv preprint, arXiv:1604.01210. Url: https://arxiv.org/abs/1604.01210.
+}
 \examples{
 \dontrun{
 data(yeast)

@@ -25,6 +25,9 @@ The \code{summary.neat} function returns the following values:
 \seealso{
 \code{\link{neat}}, \code{\link{plot.neat}}, \code{\link{summary.neat}}
 }
+\references{
+Signorelli, M., Vinciotti, V., Wit, E. C. (2016). NEAT: an efficient network enrichment analysis test. ArXiv preprint, arXiv:1604.01210. Url: https://arxiv.org/abs/1604.01210.
+}
 \examples{
 \dontrun{
 data(yeast)

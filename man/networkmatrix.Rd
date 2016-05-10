@@ -28,6 +28,9 @@ A two-column matrix, where every row represents and edge. For directed networks,
 }
 \author{Mirko Signorelli}
 \seealso{\code{\link{neat}}}
+\references{
+Signorelli, M., Vinciotti, V., Wit, E. C. (2016). NEAT: an efficient network enrichment analysis test. ArXiv preprint, arXiv:1604.01210. Url: https://arxiv.org/abs/1604.01210.
+}
 \examples{
 # First case: adjacency matrix
 n<-50
