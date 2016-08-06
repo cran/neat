@@ -1,0 +1,173 @@
+---
+title: "An introduction to the R package neat"
+author: "Mirko Signorelli"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{neat}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+#Introduction
+
+##What's neat?
+
+neat is the R package that implements NEAT, the Network Enrichment Analysis Test which is presented in Signorelli, M., Vinciotti, V., Wit, E. C. (2016). _NEAT: an efficient network enrichment analysis test._ ArXiv preprint, arXiv:1604.01210. 
+
+The article can be found at https://arxiv.org/abs/1604.01210
+
+##Get started
+
+In order to be able to use the package, you need to install it with 
+```{r, eval=FALSE, echo=TRUE, results='asis'}
+install.packages('neat')
+```
+and, then, to load it with the command
+```{r, eval=TRUE, echo=TRUE, results='asis'}
+library('neat')
+```
+
+#A first example
+
+Let's first have a quick look at an example of how a network enrichment analysis can be carried out with NEAT.
+
+The analysis will tipically consist of three steps: preparation of the data, computation of the test and inspection of the results.
+
+##Preparation of the data
+
+Let's start by loading `yeast`, a list which contains the data that we will need for the analysis:
+
+```{r, eval=TRUE, echo=TRUE, results='markup'}
+data(yeast) # load the data
+ls(yeast) # display the content of the list
+```
+
+Let's say that we are interested to know whether a set of differentially expressed genes, `yeast$esr2`, can be related to some functional gene sets contained in `yeast$goslimproc`. Let's focus the attention on two of these processes, namely 'response to heat' and 'response to starvation'. 
+
+Before we can proceed with the analysis, we have to create two lists of gene sets, one (which I will call `induced_genes`) containing the set of differentially expressed genes and the other (called `functional_sets`) with the functional sets of interest:
+
+```{r, eval=TRUE, echo=TRUE, results='markup'}
+induced_genes = list('ESR 2' = yeast$esr2) # set of differentially expressed genes 
+#(ESR 2 is the set of induced ESR genes)
+functional_sets = yeast$goslimproc[c(72,75)] # two functional gene sets of interest: 
+#response to heat and to starvation
+```
+
+Besides these two lists, we will need two further objects:
+
+- `yeast$yeastnet`, a matrix that contains YeastNet (a network incorporating known functional couplings between yeast genes, see the help page `?yeast` for more details);
+- `yeast$ynetgenes`, a vector containing the names of all the genes that are present in the network.
+
+## Computation of the test
+
+The computation of the test can be done with the function `neat` as follows:
+
+```{r, eval=TRUE, echo=TRUE, results='markup'}
+test = neat(alist = induced_genes, blist = functional_sets, network = yeast$yeastnet,
+            nettype = 'undirected', nodes = yeast$ynetgenes, alpha = 0.01)
+```
+
+```{r, eval=TRUE, echo=FALSE, results='markup'}
+test$expected_nab = round(test$expected_nab,1)
+test$pvalue = round(test$pvalue,4)
+```
+
+## Analysis of the results
+
+The results are now saved in the object `test`, which we can display with the command `print`:
+
+```{r, eval=TRUE, echo=TRUE, results='markup'}
+print(test)
+```
+
+From the table we can see that the set of differentially expressed genes (`ESR 2`) is not enriched with respect to the set of genes involved in response to heating, whereas is overenriched with respect to the set of genes that are responsible for response to starvation. Thus, we can conclude that genes in `ESR 2` are activated when the yeast cell is exposed to starvation, but not when exposed to heating.
+
+# A closer look to the package
+
+The core of the package is the function `neat`:
+```{r, eval=FALSE, echo=TRUE, results='markup'}
+neat(alist, blist, network, nettype, nodes, alpha = NULL, 
+     anames = NULL, bnames = NULL)
+```
+
+The fundamental arguments of the function are:
+
+- `alist` and `blist`, two lists of gene sets;
+
+- `network`, which can be specified in three different formats;
+
+- `nettype`, either `'undirected'` or `'directed'`;
+
+- `nodes`, a vector containing the names of all nodes in the network.
+
+Moreover, three optional arguments are `alpha`, which allows to specify the significance level of the test, and `anames` and `bnames` (they can be used to name the elements of `alist` and `blist`, if not already named).
+
+As a (toy) example, let's consider a partially directed network with 7 nodes defined by the following adjacency matrix
+```{r, eval=TRUE, echo=TRUE, results='markup'}
+A = matrix(0, nrow=7, ncol=7)
+labels = letters[1:7]
+rownames(A) = labels; colnames(A) = labels
+A[1,c(2,3)]=1; A[2,c(5,7)]=1;A[3,c(1,4)]=1;A[4,c(2,5,7)]=1;A[6,c(2,5)]=1;A[7,4]=1
+print(A)
+```
+
+###How to specify the lists of gene sets
+Let's consider three sets of genes {a,e}, {c,g} and {d,f} and suppose we want to test whether there is enrichment from the first two sets to the third one.
+
+First of all, let's create a vector for each of the three sets:
+```{r, eval=TRUE, echo=TRUE, results='markup'}
+set1 = c('a','e')
+set2 = c('c','g')
+set3 = c('d','f')
+```
+
+As we want to know whether there is enrichment from `set1` and `set2` to `set3`, we can create two gene lists, one (`alist`) containing `set1` and `set2` and the other (`blist`) containing `set3`:
+```{r, eval=TRUE, echo=TRUE, results='markup'}
+alist = list('set 1' = set1, 'set 2' = set2)
+blist = list('set 3' = set3)
+```
+
+### Alternative network formats
+Above we have defined the network with its adjacency matrix `A`. However, the network can be passed to `neat` in three alternative formats:
+
+- a sparse adjacency matrix, e.g.
+```{r, eval=TRUE, echo=TRUE, results='markup'}
+library(Matrix)
+as(A, 'sparseMatrix')
+```
+
+- an `igraph` graph;
+
+- a two-column matrix where every row represents and edge (for directed networks, parent nodes must be in the first column, and child nodes in the second), e.g.:
+```{r, eval=TRUE, echo=FALSE, results='markup'}
+networkmatrix(A, labels, 'directed')
+```
+
+###Network type
+
+Set the argument `nettype` equal to `'undirected'` if an undirected network is at hand, and equal to `'directed'` if you are considering a directed or partially directed network.
+
+###Compute the test
+
+Once you have prepared the lists of gene sets and the network, what you need is to run `neat`, without forgetting to specify the correct `nettype` (here `nettype = 'directed`) and the labels of nodes (here `nodes = labels`):
+
+```{r, eval=TRUE, echo=TRUE, results='markup'}
+test1 = neat(alist = alist, blist = blist, network = A, 
+             nettype = 'directed', nodes = labels)
+print(test1)
+```
+
+If you want to add to the results a column specifying the conclusion of the test (overenrichment, no enrichment or underenrichment) for a given significance level, you use the option `alpha`:
+```{r, eval=TRUE, echo=TRUE, results='markup'}
+test2 = neat(alist = alist, blist = blist, network = A, 
+             nettype = 'directed', nodes = labels, alpha = 0.05)
+print(test2)
+```
+
+#Further details and material
+
+The aim of this vignette is to provide a quick introduction to the computation of NEAT using R. Here I focused my attention on the fundamental aspects that one needs to use the package. 
+
+Further details, functions and examples can be found in the manual of the package, which is available at https://cran.r-project.org/package=neat
+
+The description of the method is available in the article by Signorelli et al. (2016) which you can find here: https://arxiv.org/abs/1604.01210. A shorter version of the paper was presented at the 31st IWSM and published in the Conference proceedings: https://www.researchgate.net/publication/305082810_NEAT_an_efficient_Network_Enrichment_Analysis_Test

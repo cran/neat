@@ -1,9 +1,13 @@
-d351066e3c113a40183055d42a8cc4e0 *DESCRIPTION
+c193df054469367bf5329d084693ded5 *DESCRIPTION
 b3f4c361e400fc0efbb9bd00d2b68e81 *NAMESPACE
 05731a7086cc7be1735d752da87f46b0 *R/neat.R
+5f9830cf4fe218fd632a9e80ef3ce2be *build/vignette.rds
 735ed495e03346d2e71503123027fa22 *data/datalist
-521a62a8a00dcfeccffd86fdfb6ddc83 *data/yeast.RData
+12ee4a78d218c53052a7e0d4197572d2 *data/yeast.RData
 358b59c83bbdc73b4d170b6fc6d3f2d9 *inst/CITATION
+12038d29066fa5b2e16d37654fcaa5a5 *inst/doc/neat.R
+c3ea8c701a8826b6a69d169d6569c721 *inst/doc/neat.Rmd
+98b0e3eb602e78e3b0d265d374db89c6 *inst/doc/neat.html
 1ac5d7314abfe95a086985212589dc5b *man/neat-package.Rd
 f68ed0e652359ccedf74d71039efdbba *man/neat.Rd
 cf398e9bec1e6951d136b30024654941 *man/networkmatrix.Rd
@@ -11,3 +15,4 @@ d6d164f0924d5f5efca445891b84a771 *man/plot.neat.Rd
 324a950bc69d096d1f1d14b0873d4ca2 *man/print.neat.Rd
 8514424722b6330de8221e2938c57f88 *man/summary.neat.Rd
 0caa6932e431dfb93c27df6734ac02f3 *man/yeast.Rd
+c3ea8c701a8826b6a69d169d6569c721 *vignettes/neat.Rmd
