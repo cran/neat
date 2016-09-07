@@ -29,9 +29,9 @@ Gasch, A. P., Spellman, P. T., Kao, C. M., Carmel-Harel, O., Eisen, M. B., Storz
 
 Kanehisa, M., and Goto, S. (2002). KEGG: Kyoto Encyclopedia of Genes and Genomes. Nucleic Acids Res., 28(1), 27-30.
 
-Kim, H., Shin, J., Kim, E., Kim, H., Hwang, S., Shim, J. E., and Lee, I. (2013). YeastNet v3: a public database of data-specific and integrated functional gene networks for saccharomyces cerevisiae. Nucleic Acids Res., pages 1-6.
+Kim, H., Shin, J., Kim, E., Kim, H., Hwang, S., Shim, J. E., and Lee, I. (2013). Yeastnet v3: a public database of data-specific and integrated functional gene networks for saccharomyces cerevisiae. Nucleic Acids Res., 42 (D1), D731-6.
 
-Signorelli, M., Vinciotti, V., Wit, E. C. (2016). NEAT: an efficient network enrichment analysis test. ArXiv preprint, arXiv:1604.01210. Url: https://arxiv.org/abs/1604.01210.
+Signorelli, M., Vinciotti, V., Wit, E. C. (2016). NEAT: an efficient network enrichment analysis test. BMC Bioinformatics, 17:352. Url: https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1203-6.
 }
 \references{
 
@@ -41,9 +41,9 @@ Gasch, A. P., Spellman, P. T., Kao, C. M., Carmel-Harel, O., Eisen, M. B., Storz
 
 Kanehisa, M., and Goto, S. (2002). KEGG: Kyoto Encyclopedia of Genes and Genomes. Nucleic Acids Res., 28(1), 27-30.
 
-Kim, H., Shin, J., Kim, E., Kim, H., Hwang, S., Shim, J. E., and Lee, I. (2013). Yeastnet v3: a public database of data-specific and integrated functional gene networks for saccharomyces cerevisiae. Nucleic Acids Res., pages 1-6.
+Kim, H., Shin, J., Kim, E., Kim, H., Hwang, S., Shim, J. E., and Lee, I. (2013). Yeastnet v3: a public database of data-specific and integrated functional gene networks for saccharomyces cerevisiae. Nucleic Acids Res., 42 (D1), D731-6.
 
-Signorelli, M., Vinciotti, V., Wit, E. C. (2016). NEAT: an efficient network enrichment analysis test. ArXiv preprint, arXiv:1604.01210. Url: https://arxiv.org/abs/1604.01210.
+Signorelli, M., Vinciotti, V., Wit, E. C. (2016). NEAT: an efficient network enrichment analysis test. BMC Bioinformatics, 17:352. Url: https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1203-6.
 }
 \examples{
 \dontrun{

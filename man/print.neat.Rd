@@ -19,7 +19,7 @@ Print method of \code{neat}
 \author{Mirko Signorelli}
 \seealso{\code{\link{neat}}, \code{\link{plot.neat}}, \code{\link{summary.neat}}}
 \references{
-Signorelli, M., Vinciotti, V., Wit, E. C. (2016). NEAT: an efficient network enrichment analysis test. ArXiv preprint, arXiv:1604.01210. Url: https://arxiv.org/abs/1604.01210.
+Signorelli, M., Vinciotti, V., Wit, E. C. (2016). NEAT: an efficient network enrichment analysis test. BMC Bioinformatics, 17:352. Url: https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1203-6.
 }
 \examples{
 A = matrix(0, nrow=7, ncol=7)

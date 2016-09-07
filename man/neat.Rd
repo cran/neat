@@ -29,7 +29,7 @@ neat(alist, blist = NULL, network, nettype, nodes, alpha = NULL,
 \author{Mirko Signorelli}
 \seealso{\code{\link{networkmatrix}}, \code{\link{plot.neat}},  \code{\link{print.neat}}, \code{\link{summary.neat}}}
 \references{
-Signorelli, M., Vinciotti, V., Wit, E. C. (2016). NEAT: an efficient network enrichment analysis test. ArXiv preprint, arXiv:1604.01210. Url: https://arxiv.org/abs/1604.01210.
+Signorelli, M., Vinciotti, V., Wit, E. C. (2016). NEAT: an efficient network enrichment analysis test. BMC Bioinformatics, 17:352. Url: https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1203-6.
 }
 \examples{
 # Example 1: network given as adjacency matrix:

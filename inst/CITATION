@@ -5,14 +5,14 @@ citEntry(entry = "Article",
   author       = personList(as.person("M. Signorelli"),
                    as.person("V. Vinciotti"),
                    as.person("E. C. Wit")),
-  journal      = "ArXiv preprint ",
+  journal      = "BMC Bioinformatics",
   year         = "2016",
-  number       = "arXiv:1604.01210",
-  url          = "https://arxiv.org/pdf/1604.01210v2.pdf",
+  volume       = "17:352",
+  url          = "https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1203-6",
 
   textVersion  =
   paste("Signorelli, M., Vinciotti, V., Wit, E. C. (2016).",
         "NEAT: an efficient network enrichment analysis test.",
-        "ArXiv preprint, arXiv:1604.01210.",
-        "URL https://arxiv.org/pdf/1604.01210v2.pdf")
+        "BMC Bioinformatics, 17:352",
+        "URL https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1203-6")
 )

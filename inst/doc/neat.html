@@ -76,8 +76,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h1>Introduction</h1>
 <div id="whats-neat" class="section level2">
 <h2>What’s neat?</h2>
-<p>neat is the R package that implements NEAT, the Network Enrichment Analysis Test which is presented in Signorelli, M., Vinciotti, V., Wit, E. C. (2016). <em>NEAT: an efficient network enrichment analysis test.</em> ArXiv preprint, arXiv:1604.01210.</p>
-<p>The article can be found at <a href="https://arxiv.org/abs/1604.01210" class="uri">https://arxiv.org/abs/1604.01210</a></p>
+<p>neat is the R package that implements NEAT, the Network Enrichment Analysis Test which is presented in Signorelli, M., Vinciotti, V., Wit, E. C. (2016). <em>NEAT: an efficient network enrichment analysis test.</em> BMC Bioinformatics, 17:352.</p>
+<p>The article is <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1203-6">freely available from the website of BMC Bioinformatics</a>.</p>
+</div>
+<div id="whats-network-enrichment-analysis" class="section level2">
+<h2>What’s “network” enrichment analysis?</h2>
+<p>Network enrichment analysis is an extension of traditional gene enrichment analysis (GEA) tests, which are typically used to provide a characterization of a target gene set by relating it to gene sets (such as Gene Ontologies or KEGG pathways) whose function is already known.</p>
+<p>A known limitation of GEA tests is that they ignore associations and dependences between genes. The purpose of network enrichment analysis is thus to integrate GEA tests with information on known relations between genes, represented by means of a gene network.</p>
+<p>Loosely speaking, we can say that network enrichment analysis incorporates genetic networks, with their information on gene dependences, into gene enrichment tests. Hence, the name “network” enrichment analysis.</p>
 </div>
 <div id="get-started" class="section level2">
 <h2>Get started</h2>
@@ -90,7 +96,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="a-first-example" class="section level1">
 <h1>A first example</h1>
 <p>Let’s first have a quick look at an example of how a network enrichment analysis can be carried out with NEAT.</p>
-<p>The analysis will tipically consist of three steps: preparation of the data, computation of the test and inspection of the results.</p>
+<p>The analysis will typically consist of three steps: preparation of the data, computation of the test and inspection of the results.</p>
 <div id="preparation-of-the-data" class="section level2">
 <h2>Preparation of the data</h2>
 <p>Let’s start by loading <code>yeast</code>, a list which contains the data that we will need for the analysis:</p>
@@ -99,19 +105,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <pre><code>## [1] &quot;esr1&quot;       &quot;esr2&quot;       &quot;goslimproc&quot; &quot;kegg&quot;       &quot;yeastnet&quot;  
 ## [6] &quot;ynetgenes&quot;</code></pre>
 <p>Let’s say that we are interested to know whether a set of differentially expressed genes, <code>yeast$esr2</code>, can be related to some functional gene sets contained in <code>yeast$goslimproc</code>. Let’s focus the attention on two of these processes, namely ‘response to heat’ and ‘response to starvation’.</p>
-<p>Before we can proceed with the analysis, we have to create two lists of gene sets, one (which I will call <code>induced_genes</code>) containing the set of differentially expressed genes and the other (called <code>functional_sets</code>) with the functional sets of interest:</p>
+<p>Before we can proceed with the analysis, we have to create two lists of gene sets, one (which we will call <code>induced_genes</code>) containing the set of differentially expressed genes and the other (called <code>functional_sets</code>) with the functional sets of interest:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">induced_genes =<span class="st"> </span><span class="kw">list</span>(<span class="st">'ESR 2'</span> =<span class="st"> </span>yeast$esr2) <span class="co"># set of differentially expressed genes </span>
 <span class="co">#(ESR 2 is the set of induced ESR genes)</span>
 functional_sets =<span class="st"> </span>yeast$goslimproc[<span class="kw">c</span>(<span class="dv">72</span>,<span class="dv">75</span>)] <span class="co"># two functional gene sets of interest: </span>
 <span class="co">#response to heat and to starvation</span></code></pre></div>
 <p>Besides these two lists, we will need two further objects:</p>
 <ul>
-<li><code>yeast$yeastnet</code>, a matrix that contains YeastNet (a network incorporating known functional couplings between yeast genes, see the help page <code>?yeast</code> for more details);</li>
+<li><code>yeast$yeastnet</code>, a two-column matrix that contains YeastNet (a network incorporating known functional couplings between yeast genes, see the help page <code>?yeast</code> for more details);</li>
 <li><code>yeast$ynetgenes</code>, a vector containing the names of all the genes that are present in the network.</li>
 </ul>
 </div>
 <div id="computation-of-the-test" class="section level2">
 <h2>Computation of the test</h2>
+<p>The idea behind NEAT is that if two gene sets are related, then in the network we expect them to be connected by a larger (or smaller) number of links than we would expect to observe by chance. Our null hypothesis, thus, is that if A and B are unrelated, then links are randomly placed between the two groups, so that the total number of links between A and B can be assumed to follow an hypergeometric distribution.</p>
+<p>If, however, the number of links that we actually observe between A and B turns out to be significantly different from what we would expect to get if links were placed randomly, then we take this fact as potential evidence of a relation between the two groups and we say that there is ``enrichment&quot; between them.</p>
 <p>The computation of the test can be done with the function <code>neat</code> as follows:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test =<span class="st"> </span><span class="kw">neat</span>(<span class="dt">alist =</span> induced_genes, <span class="dt">blist =</span> functional_sets, <span class="dt">network =</span> yeast$yeastnet,
             <span class="dt">nettype =</span> <span class="st">'undirected'</span>, <span class="dt">nodes =</span> yeast$ynetgenes, <span class="dt">alpha =</span> <span class="fl">0.01</span>)</code></pre></div>
@@ -123,7 +131,7 @@ functional_sets =<span class="st"> </span>yeast$goslimproc[<span class="kw">c</s
 <pre><code>##       A                      B nab expected_nab pvalue     conclusion
 ## 1 ESR 2       response_to_heat  86         96.9 0.2518  No enrichment
 ## 2 ESR 2 response_to_starvation 459        331.4 0.0000 Overenrichment</code></pre>
-<p>From the table we can see that the set of differentially expressed genes (<code>ESR 2</code>) is not enriched with respect to the set of genes involved in response to heating, whereas is overenriched with respect to the set of genes that are responsible for response to starvation. Thus, we can conclude that genes in <code>ESR 2</code> are activated when the yeast cell is exposed to starvation, but not when exposed to heating.</p>
+<p>From the table we can see that the set of differentially expressed genes (<code>ESR 2</code>) is not enriched with respect to the set of genes involved in response to heating, whereas it is overenriched with respect to the set of genes that are responsible for response to starvation (that is to say, the observed number of links, 459, is significantly higher than what we would expect to get by chance, i.e. 331). Thus, we can conclude that genes in <code>ESR 2</code> are regulated when the yeast cell is exposed to starvation, but not when exposed to heating.</p>
 </div>
 </div>
 <div id="a-closer-look-to-the-package" class="section level1">
@@ -183,7 +191,7 @@ blist =<span class="st"> </span><span class="kw">list</span>(<span class="st">'s
 ## g . . . 1 . . .</code></pre>
 <ul>
 <li><p>an <code>igraph</code> graph;</p></li>
-<li><p>a two-column matrix where every row represents and edge (for directed networks, parent nodes must be in the first column, and child nodes in the second), e.g.:</p></li>
+<li><p>a two-column matrix where every row represents and edge (for directed and mixed networks, parent nodes must be in the first column, and child nodes in the second), e.g.:</p></li>
 </ul>
 <pre><code>##       [,1] [,2]
 ##  [1,] &quot;a&quot;  &quot;b&quot; 
@@ -205,7 +213,7 @@ blist =<span class="st"> </span><span class="kw">list</span>(<span class="st">'s
 </div>
 <div id="compute-the-test" class="section level3">
 <h3>Compute the test</h3>
-<p>Once you have prepared the lists of gene sets and the network, what you need is to run <code>neat</code>, without forgetting to specify the correct <code>nettype</code> (here <code>nettype = 'directed</code>) and the labels of nodes (here <code>nodes = labels</code>):</p>
+<p>Once you have prepared the lists of gene sets and the network, what you need is to run <code>neat</code>, without forgetting to specify the correct <code>nettype</code> (here <code>nettype = 'directed'</code>) and the labels of nodes (here <code>nodes = labels</code>):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test1 =<span class="st"> </span><span class="kw">neat</span>(<span class="dt">alist =</span> alist, <span class="dt">blist =</span> blist, <span class="dt">network =</span> A, 
              <span class="dt">nettype =</span> <span class="st">'directed'</span>, <span class="dt">nodes =</span> labels)
 <span class="kw">print</span>(test1)</code></pre></div>
@@ -224,8 +232,8 @@ blist =<span class="st"> </span><span class="kw">list</span>(<span class="st">'s
 <div id="further-details-and-material" class="section level1">
 <h1>Further details and material</h1>
 <p>The aim of this vignette is to provide a quick introduction to the computation of NEAT using R. Here I focused my attention on the fundamental aspects that one needs to use the package.</p>
-<p>Further details, functions and examples can be found in the manual of the package, which is available at <a href="https://cran.r-project.org/package=neat" class="uri">https://cran.r-project.org/package=neat</a></p>
-<p>The description of the method is available in the article by Signorelli et al. (2016) which you can find here: <a href="https://arxiv.org/abs/1604.01210" class="uri">https://arxiv.org/abs/1604.01210</a>. A shorter version of the paper was presented at the 31st IWSM and published in the Conference proceedings: <a href="https://www.researchgate.net/publication/305082810_NEAT_an_efficient_Network_Enrichment_Analysis_Test" class="uri">https://www.researchgate.net/publication/305082810_NEAT_an_efficient_Network_Enrichment_Analysis_Test</a></p>
+<p>Further details, functions and examples can be found in <a href="https://cran.r-project.org/package=neat">the manual of the package</a>.</p>
+<p>The description of the method is available in an article <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1203-6">which you can read here</a>. A shorter version of the paper was presented at the 31st IWSM and <a href="https://www.researchgate.net/publication/305082810_NEAT_an_efficient_Network_Enrichment_Analysis_Test">published in the Conference proceedings</a>.</p>
 </div>
 
 
