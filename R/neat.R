@@ -100,8 +100,18 @@ neat = function(alist, blist = NULL, network, nettype, nodes, alpha = NULL, anam
       for (i in 1:length(blist)) {
         if (is.factor(blist[[i]]) == T) {blist[[i]] = as.character(blist[[i]])}
         einb[[i]] = (net[,1] %in% blist[[i]])|(net[,2] %in% blist[[i]])
-        blogic[[i]] = (net[einb[[i]],][,1] %in% blist[[i]])
-        blogic2[[i]] = (net[einb[[i]],][,2] %in% blist[[i]])
+        # controls added from version 1.1:
+        if (sum(einb[[i]]) == 0) stop(paste('There are no edges connected to genes in',
+                                            names(blist)[i],'. The test cannot be computed.'))
+        else if (sum(einb[[i]]) == 1) {
+          temp = as.matrix(t(net[einb[[i]],]))
+          blogic[[i]] = (temp[,1] %in% blist[[i]])
+          blogic2[[i]] = (temp[,2] %in% blist[[i]])
+        }
+        else {
+          blogic[[i]] = (net[einb[[i]],][,1] %in% blist[[i]])
+          blogic2[[i]] = (net[einb[[i]],][,2] %in% blist[[i]])
+        }
         ib[i] = sum(blogic[[i]]) + sum(blogic2[[i]]) # total degree of B (undirected net!)
       }
       k=1
