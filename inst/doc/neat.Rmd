@@ -181,4 +181,4 @@ The aim of this vignette is to provide a quick introduction to the computation o
 
 Further details, functions and examples can be found in [the manual of the package](https://cran.r-project.org/package=neat).
 
-The description of the method is available in an article [which you can read here](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1203-6). A shorter version of the paper was presented at the 31st IWSM and [published in the Conference proceedings](https://www.researchgate.net/publication/305082810_NEAT_an_efficient_Network_Enrichment_Analysis_Test).
+The description of the method is available in an article [which you can read here](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1203-6).
