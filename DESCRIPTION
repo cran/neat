@@ -1,8 +1,8 @@
 Package: neat
 Type: Package
 Title: Efficient Network Enrichment Analysis Test
-Version: 1.1.1
-Date: 2017-07-20
+Version: 1.1.2
+Date: 2018-02-9
 Depends: R (>= 3.3.0)
 Author: Mirko Signorelli, Veronica Vinciotti and Ernst C. Wit
 Maintainer: Mirko Signorelli <m.signorelli@lumc.nl>
@@ -15,6 +15,6 @@ Suggests: Matrix, knitr, rmarkdown
 VignetteBuilder: knitr
 License: GPL-3
 NeedsCompilation: no
-Packaged: 2017-07-19 08:25:07 UTC; msignorelli
+Packaged: 2018-02-09 11:55:31 UTC; msignorelli
 Repository: CRAN
-Date/Publication: 2017-07-19 10:57:20 UTC
+Date/Publication: 2018-02-09 12:05:01 UTC

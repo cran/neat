@@ -8,22 +8,22 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-#Introduction
+# Introduction
 
-##What's neat?
+## What's neat?
 
 neat is the R package that implements NEAT, the Network Enrichment Analysis Test which is presented in Signorelli, M., Vinciotti, V., Wit, E. C. (2016). _NEAT: an efficient network enrichment analysis test._ BMC Bioinformatics, 17:352. 
 
 The article is [freely available from the website of BMC Bioinformatics](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1203-6).
 
-##What's "network" enrichment analysis?
+## What's "network" enrichment analysis?
 Network enrichment analysis is an extension of traditional gene enrichment analysis (GEA) tests, which are typically used to provide a characterization of a target gene set by relating it to gene sets (such as Gene Ontologies or KEGG pathways) whose function is already known.
 
 A known limitation of GEA tests is that they ignore associations and dependences between genes. The purpose of network enrichment analysis is thus to integrate GEA tests with information on known relations between genes, represented by means of a gene network.
 
 Loosely speaking, we can say that network enrichment analysis incorporates genetic networks, with their information on gene dependences, into gene enrichment tests. Hence, the name "network" enrichment analysis.
 
-##Get started
+## Get started
 
 In order to be able to use the package, you need to install it with 
 ```{r, eval=FALSE, echo=TRUE, results='asis'}
@@ -34,13 +34,13 @@ and, then, to load it with the command
 library('neat')
 ```
 
-#A first example
+# A first example
 
 Let's first have a quick look at an example of how a network enrichment analysis can be carried out with NEAT.
 
 The analysis will typically consist of three steps: preparation of the data, computation of the test and inspection of the results.
 
-##Preparation of the data
+## Preparation of the data
 
 Let's start by loading `yeast`, a list which contains the data that we will need for the analysis:
 

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Computation of the test</title>
+<title>Introduction</title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -201,22 +201,23 @@ hr {
 </head>
 
 <body>
-<p>#Introduction</p>
+<h1>Introduction</h1>
 
-<p>##What&#39;s neat?</p>
+<h2>What&#39;s neat?</h2>
 
 <p>neat is the R package that implements NEAT, the Network Enrichment Analysis Test which is presented in Signorelli, M., Vinciotti, V., Wit, E. C. (2016). <em>NEAT: an efficient network enrichment analysis test.</em> BMC Bioinformatics, 17:352. </p>
 
 <p>The article is <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1203-6">freely available from the website of BMC Bioinformatics</a>.</p>
 
-<p>##What&#39;s &ldquo;network&rdquo; enrichment analysis?
-Network enrichment analysis is an extension of traditional gene enrichment analysis (GEA) tests, which are typically used to provide a characterization of a target gene set by relating it to gene sets (such as Gene Ontologies or KEGG pathways) whose function is already known.</p>
+<h2>What&#39;s &ldquo;network&rdquo; enrichment analysis?</h2>
+
+<p>Network enrichment analysis is an extension of traditional gene enrichment analysis (GEA) tests, which are typically used to provide a characterization of a target gene set by relating it to gene sets (such as Gene Ontologies or KEGG pathways) whose function is already known.</p>
 
 <p>A known limitation of GEA tests is that they ignore associations and dependences between genes. The purpose of network enrichment analysis is thus to integrate GEA tests with information on known relations between genes, represented by means of a gene network.</p>
 
 <p>Loosely speaking, we can say that network enrichment analysis incorporates genetic networks, with their information on gene dependences, into gene enrichment tests. Hence, the name &ldquo;network&rdquo; enrichment analysis.</p>
 
-<p>##Get started</p>
+<h2>Get started</h2>
 
 <p>In order to be able to use the package, you need to install it with </p>
 
@@ -228,13 +229,13 @@ Network enrichment analysis is an extension of traditional gene enrichment analy
 <pre><code class="r">library(&#39;neat&#39;)
 </code></pre>
 
-<p>#A first example</p>
+<h1>A first example</h1>
 
 <p>Let&#39;s first have a quick look at an example of how a network enrichment analysis can be carried out with NEAT.</p>
 
 <p>The analysis will typically consist of three steps: preparation of the data, computation of the test and inspection of the results.</p>
 
-<p>##Preparation of the data</p>
+<h2>Preparation of the data</h2>
 
 <p>Let&#39;s start by loading <code>yeast</code>, a list which contains the data that we will need for the analysis:</p>
 
