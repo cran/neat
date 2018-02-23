@@ -122,7 +122,7 @@ A[1,c(2,3)]=1; A[2,c(5,7)]=1;A[3,c(1,4)]=1;A[4,c(2,5,7)]=1;A[6,c(2,5)]=1;A[7,4]=
 print(A)
 ```
 
-###How to specify the lists of gene sets
+### How to specify the lists of gene sets
 Let's consider three sets of genes {a,e}, {c,g} and {d,f} and suppose we want to test whether there is enrichment from the first two sets to the third one.
 
 First of all, let's create a vector for each of the three sets:
@@ -154,11 +154,11 @@ as(A, 'sparseMatrix')
 networkmatrix(A, labels, 'directed')
 ```
 
-###Network type
+### Network type
 
 Set the argument `nettype` equal to `'undirected'` if an undirected network is at hand, and equal to `'directed'` if you are considering a directed or partially directed network.
 
-###Compute the test
+### Compute the test
 
 Once you have prepared the lists of gene sets and the network, what you need is to run `neat`, without forgetting to specify the correct `nettype` (here `nettype = 'directed'`) and the labels of nodes (here `nodes = labels`):
 
@@ -175,7 +175,7 @@ test2 = neat(alist = alist, blist = blist, network = A,
 print(test2)
 ```
 
-#Further details and material
+# Further details and material
 
 The aim of this vignette is to provide a quick introduction to the computation of NEAT using R. Here I focused my attention on the fundamental aspects that one needs to use the package. 
 
