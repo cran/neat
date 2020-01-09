@@ -3,20 +3,20 @@ networkmatrix = function(network, nodes, nettype) {
   if ((nettype %in% c('directed','undirected')) == FALSE) stop("nettype must be either 'directed' or 'undirected' ")
   requireNamespace("igraph", quietly = TRUE)
   # adjacency matrix: first converted to igraph
-  if (class(network) == 'matrix' & nettype == 'directed') {
+  if (inherits(network, 'matrix') & nettype == 'directed') {
     colnames(network) = nodes
     network = igraph::graph.adjacency(network,"directed", diag=F)
   }
-  if (class(network) == 'matrix' & nettype == 'undirected') {
+  if (inherits(network, 'matrix') & nettype == 'undirected') {
     colnames(network) = nodes
     network = igraph::graph.adjacency(network,"undirected", diag=F)
   }
   # then, get edgelist from igraph
-  if (class(network)==c('igraph')) {
+  if (inherits(network, 'igraph')) {
     if (is.null(igraph::V(network)$name)) igraph::V(network)$name = nodes
     output = igraph::get.edgelist(network, names = T)
   }
-  else if (class(network) == "dgCMatrix") {
+  else if (inherits(network, "dgCMatrix")) {
     requireNamespace("Matrix", quietly = TRUE)
     indexes = as.matrix(Matrix::summary(network))
     output = matrix(nrow = dim(indexes)[1], ncol = 2)
@@ -42,17 +42,19 @@ pvalue = function(x, ss, K, N) { #2*min(p>,p<)+p=
 ########## neat CLASS
 neatc = function(x,...) UseMethod('neat', x)
 
-neat = function(alist, blist = NULL, network, nettype, nodes, alpha = NULL, anames = NULL, bnames = NULL) {
+neat = function(alist, blist = NULL, network, nettype, 
+                nodes, alpha = NULL, mtc.type = 'fdr',
+                anames = NULL, bnames = NULL) {
   if (is.null(alpha) == FALSE) {if ( alpha<=0 | alpha>=1 ) stop('alpha must be in (0,1)')}
   if ((nettype %in% c('directed','undirected')) == FALSE) stop("nettype must be either 'directed' or 'undirected' ")
   if (nettype == 'directed' & is.null(blist)) stop("blist cannot be null when nettype == 'directed' (see manual)")
   # first case: igraph object
-  if (class(network) == 'igraph') { 
+  if (inherits(network, 'igraph')) { 
     requireNamespace("igraph", quietly = TRUE)
     net = networkmatrix(network, nodes, nettype)
   }
   # second case A: adjacency matrix
-  else if (class(network) == "matrix" & ncol(network)>2) {
+  else if (inherits(network, "matrix") & ncol(network)>2) {
     if (isSymmetric(network)==TRUE & nettype == 'directed') {
       warning('The adjacency matrix is symmetric. Should you set nettype = "undirected"?')
     }
@@ -62,12 +64,12 @@ neat = function(alist, blist = NULL, network, nettype, nodes, alpha = NULL, anam
     net = networkmatrix(network, nodes, nettype)
   }
   # second case B: sparse adjacency matrix (class "dgCMatrix")
-  else if (class(network) == "dgCMatrix") {
+  else if (inherits(network, "dgCMatrix")) {
     requireNamespace("Matrix", quietly = TRUE)
     net = networkmatrix(network, nodes, nettype)
   }
   # third case: two-column matrix with labels
-  else if (class(network) == "matrix" & ncol(network)==2) net=network 
+  else if (inherits(network, "matrix") & ncol(network)==2) net=network 
   # NB: from this point on, 'net' is the network matrix to be used!!!
   if (is.factor(nodes) == T) {nodes = as.character(nodes)}
   oa = numeric(); ib = numeric(); nab = numeric() 
@@ -200,13 +202,19 @@ neat = function(alist, blist = NULL, network, nettype, nodes, alpha = NULL, anam
     }
   } # end of part for directed networks
   # final common code
+  p.adj = p.adjust(p, method = mtc.type)
   if (is.null(alpha) == FALSE) {
-    results = data.frame(from, to, nab, expect, p, concl)
-    names(results) = c('A', 'B', 'nab', 'expected_nab', 'pvalue', 'conclusion')
+    # concl was based on p until version 1.1.3, here this is
+    # changed and based on the adjusted p-value
+    concl[p.adj > alpha] = 'No enrichment'
+    results = data.frame(from, to, nab, expect, p, p.adj, concl)
+    names(results) = c('A', 'B', 'nab', 'expected_nab', 
+                       'pvalue', 'adjusted_p', 'conclusion')
   }
   else {
-    results = data.frame(from, to, nab, expect, p)
-    names(results) = c('A', 'B', 'nab', 'expected_nab', 'pvalue')
+    results = data.frame(from, to, nab, expect, p, p.adj)
+    names(results) = c('A', 'B', 'nab', 'expected_nab', 
+                       'pvalue', 'adjusted_p')
   }
   class(results)=c('neat','data.frame')
   results
@@ -215,8 +223,8 @@ neat = function(alist, blist = NULL, network, nettype, nodes, alpha = NULL, anam
 # summary, plot and print:
 summary.neat = function(object, ...) {
   cat("Number of comparisons:",dim(object)[1],"\n")
-  cat("Enrichments at 1% level:",sum(object$pvalue<0.01),"\n")
-  cat("Enrichments at 5% level:",sum(object$pvalue<0.05),"\n")
+  cat("Enrichments at 1% level:",sum(object$adjusted_p<0.01),"\n")
+  cat("Enrichments at 5% level:",sum(object$adjusted_p<0.05),"\n")
   cat("Kolmogorov-Smirnov test for uniformity of p-values:",round(ks.test(x=object$pvalue, y='punif')$p.value,4),"\n")
 }
 

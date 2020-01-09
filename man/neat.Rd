@@ -5,8 +5,8 @@
 \title{Performs neat for lists of gene sets}
 \description{Compute NEAT (Signorelli et al., 2016), a test for network enrichment analysis between/from a first list of sets ('A sets') and/to a second list of sets ('B sets').}
 \usage{
-neat(alist, blist = NULL, network, nettype, nodes, alpha = NULL, 
-     anames = NULL, bnames = NULL)
+neat(alist, blist = NULL, network, nettype, nodes, 
+alpha = NULL, mtc.type = 'fdr', anames = NULL, bnames = NULL)
 }
 \arguments{
   \item{alist}{List of A sets. Each element within the list is a vector of genes and represents a gene set}
@@ -15,6 +15,7 @@ neat(alist, blist = NULL, network, nettype, nodes, alpha = NULL,
   \item{nettype}{Either \code{'directed'} or \code{'undirected'}}
   \item{nodes}{Vector containing the (ordered) names of all nodes in the network}
   \item{alpha}{Significance level of the test (optional). If specified, a column with the conclusion of the test is added to the output}
+  \item{mtc.type}{Type of multiple testing correction (NB: added from package version 1.2.0). Use \code{'fdr'} or \code{'BH'} for the Benjamini-Hockberg method, and \code{'none'} if no multiple testing correction is required. To know the shortcuts for other multiple testing correction methods, see \code{\link{p.adjust}}}
   \item{anames}{Vector of names for the elements of \code{alist} (optional: it has to be provided only if the elements of \code{alist} are not named)}
   \item{bnames}{Vector of names for the elements of \code{blist} (optional: it has to be provided only if the elements of \code{blist} are not named)}
 }
@@ -24,6 +25,7 @@ neat(alist, blist = NULL, network, nettype, nodes, alpha = NULL,
 \item{nab}{observed number of links from A to B}
 \item{expected_nab}{expected number of links from A to B (in absence of enrichment)}
 \item{pvalue}{p-value of the test}
+\item{adjusted.p}{p-value adjusted to account for multiple testing}
 \item{conclusion}{conclusion of the test (only if \code{alpha} is specified): no enrichment, overenrichment or underenrichment}
 }
 \author{Mirko Signorelli}
@@ -42,8 +44,16 @@ set3 = c('d','f')
 alist = list('set 1' = set1, 'set 2' = set2)
 blist = list('set 3' = set3)
 
+# test without multiple testing correction
 test1 = neat(alist = alist, blist = blist, network=A, 
-             nettype='directed', nodes=labels, alpha=0.05)
+             nettype='directed', nodes=labels, 
+             alpha=0.05, mtc.type = 'none')
+print(test1)
+
+# test with FDR multiple testing correction (default)
+test1 = neat(alist = alist, blist = blist, network=A, 
+             nettype='directed', nodes=labels, 
+             alpha=0.05, mtc.type = 'fdr')
 print(test1)
 
 # Example 2: network given as igraph object:
@@ -57,7 +67,8 @@ alist = list('set 1' = set1, 'set 2' = set2)
 blist = list('set 3' = set3, 'set 4' = set4)
 
 test2 = neat(alist, blist, network = network, 
-             nettype='undirected', nodes=seq(1,15), alpha=NULL)
+             nettype='undirected', nodes=seq(1,15), 
+             alpha=NULL)
 print(test2)
 
 # Example 3: network given as list of links:
@@ -74,12 +85,14 @@ alist = list('set 1' = set1, 'set 2' = set2)
 blist = list('set 3' = set3, 'set4' = set4)
 
 test3 = neat(alist, blist, network = networklist, 
-             nettype = 'undirected', nodes=labels, alpha=0.05)
+             nettype = 'undirected', nodes=labels, 
+             alpha=0.05, mtc.type = 'none')
 print(test3)
 
 alist = list('set 1' = set1, 'set 2' = set2, 'set 3' = set3)
 test4 = neat(alist, network = networklist, 
-             nettype = 'undirected', nodes=labels, alpha=0.05)
+             nettype = 'undirected', nodes=labels, 
+             alpha=0.05, mtc.type = 'none')
 print(test4)
 
 # Example 4: ESR data
