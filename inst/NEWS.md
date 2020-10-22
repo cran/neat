@@ -1,3 +1,14 @@
+neat 1.2.2
+==========
+
+Minor updates in the package DESCRIPTION file:
+
+-   Updated mantainer’s email address
+-   Updated URLs associated to the package
+-   Authorship information updated using
+    <a href="mailto:Authors@R" class="email">Authors@R</a> format
+-   Added link to ORCID
+
 neat 1.2.1
 ==========
 
