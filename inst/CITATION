@@ -8,11 +8,11 @@ citEntry(entry = "Article",
   journal      = "BMC Bioinformatics",
   year         = "2016",
   volume       = "17:352",
-  url          = "https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1203-6",
+  url          = "https://doi.org/10.1186/s12859-016-1203-6",
 
   textVersion  =
   paste("Signorelli, M., Vinciotti, V., Wit, E. C. (2016).",
         "NEAT: an efficient network enrichment analysis test.",
         "BMC Bioinformatics, 17:352",
-        "URL https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1203-6")
+        "URL https://doi.org/10.1186/s12859-016-1203-6")
 )

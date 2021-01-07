@@ -1,9 +1,11 @@
 ---
 title: "An introduction to the R package neat"
 author: "Mirko Signorelli"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: true
 vignette: >
-  %\VignetteIndexEntry{neat}
+  %\VignetteIndexEntry{An introduction to the R package ptmixed}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

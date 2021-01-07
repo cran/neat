@@ -1,13 +1,13 @@
-2b2776eee769050404355394ed26aeb9 *DESCRIPTION
+6f19be246a6871807ab16fa086ddeab7 *DESCRIPTION
 4b508dc5a3406211f6c332dac77d1f34 *NAMESPACE
 84f09519eed83bce6435b2054c3c5d11 *R/neat.R
-5d4af5106f10e120a7d8c654cb996603 *build/vignette.rds
+2465f2ca4418e33eb58da980f78cbec8 *build/vignette.rds
 735ed495e03346d2e71503123027fa22 *data/datalist
 0f9bae48610c5ce6012c69c15b19b9cb *data/yeast.RData
-06c35915f84399f5fd96ca263e56d860 *inst/CITATION
-1ed0184001a40f53b087f6583786d231 *inst/NEWS.md
-7bf8742c81cc37a42ceb9b7487430a82 *inst/doc/neat.Rmd
-7c7c78e963565b3cfca8c79e52a868e5 *inst/doc/neat.html
+add95f70ddb1466fd98a7321691d532b *inst/CITATION
+9b521d2a04fd5a95ca9b4e93393d2e0f *inst/NEWS.md
+89fc68b85bb4edccd4be320bcf3af3ad *inst/doc/neat.Rmd
+428ad6dd43cf58eb113ed4c912aff2a8 *inst/doc/neat.html
 90445cb58a5f2d66ecdd37baae7db4f5 *man/neat-package.Rd
 bfc06061b54a4eb4cab1f7446f6a1d29 *man/neat.Rd
 6397fa3c403037b2855cc5ebd2a23cbd *man/networkmatrix.Rd
@@ -15,4 +15,4 @@ bfc06061b54a4eb4cab1f7446f6a1d29 *man/neat.Rd
 8ab947b7db3a22d02f6b14e494d507aa *man/print.neat.Rd
 9f82d60b2d6421b6022cecae526ab68d *man/summary.neat.Rd
 e9725cf082405cfbc004508a1630f56c *man/yeast.Rd
-7bf8742c81cc37a42ceb9b7487430a82 *vignettes/neat.Rmd
+89fc68b85bb4edccd4be320bcf3af3ad *vignettes/neat.Rmd

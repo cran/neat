@@ -1,28 +1,52 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Mirko Signorelli" />
 
 
 <title>An introduction to the R package neat</title>
 
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -32,14 +56,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -48,9 +74,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -107,6 +133,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
+
 <style type="text/css">body {
 background-color: #fff;
 margin: 1em auto;
@@ -117,9 +144,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -288,7 +312,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -305,6 +330,27 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <h4 class="author">Mirko Signorelli</h4>
 
 
+<div id="TOC">
+<ul>
+<li><a href="#introduction">Introduction</a><ul>
+<li><a href="#whats-neat">What’s neat?</a></li>
+<li><a href="#whats-network-enrichment-analysis">What’s “network” enrichment analysis?</a></li>
+<li><a href="#get-started">Get started</a></li>
+</ul></li>
+<li><a href="#a-first-example">A first example</a><ul>
+<li><a href="#preparation-of-the-data">Preparation of the data</a></li>
+<li><a href="#computation-of-the-test">Computation of the test</a></li>
+<li><a href="#analysis-of-the-results">Analysis of the results</a></li>
+</ul></li>
+<li><a href="#a-closer-look-to-the-package">A closer look to the package</a><ul>
+<li><a href="#how-to-specify-the-lists-of-gene-sets">How to specify the lists of gene sets</a></li>
+<li><a href="#alternative-network-formats">Alternative network formats</a></li>
+<li><a href="#network-type">Network type</a></li>
+<li><a href="#compute-the-test">Compute the test</a></li>
+</ul></li>
+<li><a href="#further-details-and-material">Further details and material</a></li>
+</ul>
+</div>
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
@@ -322,9 +368,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="get-started" class="section level2">
 <h2>Get started</h2>
 <p>In order to be able to use the package, you need to install it with</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">install.packages</span>(<span class="st">&#39;neat&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">&#39;neat&#39;</span>)</span></code></pre></div>
 <p>and, then, to load it with the command</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">library</span>(<span class="st">&#39;neat&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(<span class="st">&#39;neat&#39;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="a-first-example" class="section level1">
@@ -334,16 +380,16 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="preparation-of-the-data" class="section level2">
 <h2>Preparation of the data</h2>
 <p>Let’s start by loading <code>yeast</code>, a list which contains the data that we will need for the analysis:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">data</span>(yeast) <span class="co"># load the data</span></a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="kw">ls</span>(yeast) <span class="co"># display the content of the list</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">data</span>(yeast) <span class="co"># load the data</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">ls</span>(yeast) <span class="co"># display the content of the list</span></span></code></pre></div>
 <pre><code>## [1] &quot;esr1&quot;       &quot;esr2&quot;       &quot;goslimproc&quot; &quot;kegg&quot;       &quot;yeastnet&quot;  
 ## [6] &quot;ynetgenes&quot;</code></pre>
 <p>Let’s say that we are interested to know whether a set of differentially expressed genes, <code>yeast$esr2</code>, can be related to some functional gene sets contained in <code>yeast$goslimproc</code>. Let’s focus the attention on two of these processes, namely ‘response to heat’ and ‘response to starvation’.</p>
 <p>Before we can proceed with the analysis, we have to create two lists of gene sets, one (which we will call <code>induced_genes</code>) containing the set of differentially expressed genes and the other (called <code>functional_sets</code>) with the functional sets of interest:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">induced_genes =<span class="st"> </span><span class="kw">list</span>(<span class="st">&#39;ESR 2&#39;</span> =<span class="st"> </span>yeast<span class="op">$</span>esr2) <span class="co"># set of differentially expressed genes </span></a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="co">#(ESR 2 is the set of induced ESR genes)</span></a>
-<a class="sourceLine" id="cb5-3" title="3">functional_sets =<span class="st"> </span>yeast<span class="op">$</span>goslimproc[<span class="kw">c</span>(<span class="dv">72</span>,<span class="dv">75</span>)] <span class="co"># two functional gene sets of interest: </span></a>
-<a class="sourceLine" id="cb5-4" title="4"><span class="co">#response to heat and to starvation</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>induced_genes =<span class="st"> </span><span class="kw">list</span>(<span class="st">&#39;ESR 2&#39;</span> =<span class="st"> </span>yeast<span class="op">$</span>esr2) <span class="co"># set of differentially expressed genes </span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="co">#(ESR 2 is the set of induced ESR genes)</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>functional_sets =<span class="st"> </span>yeast<span class="op">$</span>goslimproc[<span class="kw">c</span>(<span class="dv">72</span>,<span class="dv">75</span>)] <span class="co"># two functional gene sets of interest: </span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="co">#response to heat and to starvation</span></span></code></pre></div>
 <p>Besides these two lists, we will need two further objects:</p>
 <ul>
 <li><code>yeast$yeastnet</code>, a two-column matrix that contains YeastNet (a network incorporating known functional couplings between yeast genes, see the help page <code>?yeast</code> for more details);</li>
@@ -355,13 +401,13 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>The idea behind NEAT is that if two gene sets are related, then in the network we expect them to be connected by a larger (or smaller) number of links than we would expect to observe by chance. Our null hypothesis, thus, is that if A and B are unrelated, then links are randomly placed between the two groups, so that the total number of links between A and B can be assumed to follow an hypergeometric distribution.</p>
 <p>If, however, the number of links that we actually observe between A and B turns out to be significantly different from what we would expect to get if links were placed randomly, then we take this fact as potential evidence of a relation between the two groups and we say that there is ``enrichment&quot; between them.</p>
 <p>The computation of the test can be done with the function <code>neat</code> as follows:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">test =<span class="st"> </span><span class="kw">neat</span>(<span class="dt">alist =</span> induced_genes, <span class="dt">blist =</span> functional_sets, <span class="dt">network =</span> yeast<span class="op">$</span>yeastnet,</a>
-<a class="sourceLine" id="cb6-2" title="2">            <span class="dt">nettype =</span> <span class="st">&#39;undirected&#39;</span>, <span class="dt">nodes =</span> yeast<span class="op">$</span>ynetgenes, <span class="dt">alpha =</span> <span class="fl">0.01</span>, <span class="dt">mtc.type =</span> <span class="st">&#39;fdr&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>test =<span class="st"> </span><span class="kw">neat</span>(<span class="dt">alist =</span> induced_genes, <span class="dt">blist =</span> functional_sets, <span class="dt">network =</span> yeast<span class="op">$</span>yeastnet,</span>
+<span id="cb6-2"><a href="#cb6-2"></a>            <span class="dt">nettype =</span> <span class="st">&#39;undirected&#39;</span>, <span class="dt">nodes =</span> yeast<span class="op">$</span>ynetgenes, <span class="dt">alpha =</span> <span class="fl">0.01</span>, <span class="dt">mtc.type =</span> <span class="st">&#39;fdr&#39;</span>)</span></code></pre></div>
 </div>
 <div id="analysis-of-the-results" class="section level2">
 <h2>Analysis of the results</h2>
 <p>The results are now saved in the object <code>test</code>, which we can display with the command <code>print</code>:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">print</span>(test)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">print</span>(test)</span></code></pre></div>
 <pre><code>##       A                      B nab expected_nab pvalue adjusted_p
 ## 1 ESR 2       response_to_heat  86         96.9 0.2518     0.2518
 ## 2 ESR 2 response_to_starvation 459        331.4 0.0000     0.0000
@@ -374,9 +420,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="a-closer-look-to-the-package" class="section level1">
 <h1>A closer look to the package</h1>
 <p>The core of the package is the function <code>neat</code>:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">neat</span>(alist, blist, network, nettype, nodes, </a>
-<a class="sourceLine" id="cb9-2" title="2">     <span class="dt">alpha =</span> <span class="ot">NULL</span>, <span class="dt">mtc.type =</span> <span class="st">&#39;fdr&#39;</span>,</a>
-<a class="sourceLine" id="cb9-3" title="3">     <span class="dt">anames =</span> <span class="ot">NULL</span>, <span class="dt">bnames =</span> <span class="ot">NULL</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">neat</span>(alist, blist, network, nettype, nodes, </span>
+<span id="cb9-2"><a href="#cb9-2"></a>     <span class="dt">alpha =</span> <span class="ot">NULL</span>, <span class="dt">mtc.type =</span> <span class="st">&#39;fdr&#39;</span>,</span>
+<span id="cb9-3"><a href="#cb9-3"></a>     <span class="dt">anames =</span> <span class="ot">NULL</span>, <span class="dt">bnames =</span> <span class="ot">NULL</span>)</span></code></pre></div>
 <p>The fundamental arguments of the function are:</p>
 <ul>
 <li><p><code>alist</code> and <code>blist</code>, two lists of gene sets;</p></li>
@@ -386,11 +432,11 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </ul>
 <p>Moreover, three optional arguments are <code>alpha</code>, which allows to specify the significance level of the test, and <code>anames</code> and <code>bnames</code> (they can be used to name the elements of <code>alist</code> and <code>blist</code>, if not already named). Starting from package version 1.2.0, a further argument <code>mtc.type</code> has been added to allow computation of multiple testing corrections within neat.</p>
 <p>As a (toy) example, let’s consider a partially directed network with 7 nodes defined by the following adjacency matrix</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">A =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow=</span><span class="dv">7</span>, <span class="dt">ncol=</span><span class="dv">7</span>)</a>
-<a class="sourceLine" id="cb10-2" title="2">labels =<span class="st"> </span>letters[<span class="dv">1</span><span class="op">:</span><span class="dv">7</span>]</a>
-<a class="sourceLine" id="cb10-3" title="3"><span class="kw">rownames</span>(A) =<span class="st"> </span>labels; <span class="kw">colnames</span>(A) =<span class="st"> </span>labels</a>
-<a class="sourceLine" id="cb10-4" title="4">A[<span class="dv">1</span>,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>)]=<span class="dv">1</span>; A[<span class="dv">2</span>,<span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">7</span>)]=<span class="dv">1</span>;A[<span class="dv">3</span>,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span>)]=<span class="dv">1</span>;A[<span class="dv">4</span>,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">7</span>)]=<span class="dv">1</span>;A[<span class="dv">6</span>,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">5</span>)]=<span class="dv">1</span>;A[<span class="dv">7</span>,<span class="dv">4</span>]=<span class="dv">1</span></a>
-<a class="sourceLine" id="cb10-5" title="5"><span class="kw">print</span>(A)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>A =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow=</span><span class="dv">7</span>, <span class="dt">ncol=</span><span class="dv">7</span>)</span>
+<span id="cb10-2"><a href="#cb10-2"></a>labels =<span class="st"> </span>letters[<span class="dv">1</span><span class="op">:</span><span class="dv">7</span>]</span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="kw">rownames</span>(A) =<span class="st"> </span>labels; <span class="kw">colnames</span>(A) =<span class="st"> </span>labels</span>
+<span id="cb10-4"><a href="#cb10-4"></a>A[<span class="dv">1</span>,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>)]=<span class="dv">1</span>; A[<span class="dv">2</span>,<span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">7</span>)]=<span class="dv">1</span>;A[<span class="dv">3</span>,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span>)]=<span class="dv">1</span>;A[<span class="dv">4</span>,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">7</span>)]=<span class="dv">1</span>;A[<span class="dv">6</span>,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">5</span>)]=<span class="dv">1</span>;A[<span class="dv">7</span>,<span class="dv">4</span>]=<span class="dv">1</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="kw">print</span>(A)</span></code></pre></div>
 <pre><code>##   a b c d e f g
 ## a 0 1 1 0 0 0 0
 ## b 0 0 0 0 1 0 1
@@ -403,12 +449,12 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <h3>How to specify the lists of gene sets</h3>
 <p>Let’s consider three sets of genes {a,e}, {c,g} and {d,f} and suppose we want to test whether there is enrichment from the first two sets to the third one.</p>
 <p>First of all, let’s create a vector for each of the three sets:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">set1 =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;a&#39;</span>,<span class="st">&#39;e&#39;</span>)</a>
-<a class="sourceLine" id="cb12-2" title="2">set2 =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;c&#39;</span>,<span class="st">&#39;g&#39;</span>)</a>
-<a class="sourceLine" id="cb12-3" title="3">set3 =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;d&#39;</span>,<span class="st">&#39;f&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>set1 =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;a&#39;</span>,<span class="st">&#39;e&#39;</span>)</span>
+<span id="cb12-2"><a href="#cb12-2"></a>set2 =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;c&#39;</span>,<span class="st">&#39;g&#39;</span>)</span>
+<span id="cb12-3"><a href="#cb12-3"></a>set3 =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;d&#39;</span>,<span class="st">&#39;f&#39;</span>)</span></code></pre></div>
 <p>As we want to know whether there is enrichment from <code>set1</code> and <code>set2</code> to <code>set3</code>, we can create two gene lists, one (<code>alist</code>) containing <code>set1</code> and <code>set2</code> and the other (<code>blist</code>) containing <code>set3</code>:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">alist =<span class="st"> </span><span class="kw">list</span>(<span class="st">&#39;set 1&#39;</span> =<span class="st"> </span>set1, <span class="st">&#39;set 2&#39;</span> =<span class="st"> </span>set2)</a>
-<a class="sourceLine" id="cb13-2" title="2">blist =<span class="st"> </span><span class="kw">list</span>(<span class="st">&#39;set 3&#39;</span> =<span class="st"> </span>set3)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>alist =<span class="st"> </span><span class="kw">list</span>(<span class="st">&#39;set 1&#39;</span> =<span class="st"> </span>set1, <span class="st">&#39;set 2&#39;</span> =<span class="st"> </span>set2)</span>
+<span id="cb13-2"><a href="#cb13-2"></a>blist =<span class="st"> </span><span class="kw">list</span>(<span class="st">&#39;set 3&#39;</span> =<span class="st"> </span>set3)</span></code></pre></div>
 </div>
 <div id="alternative-network-formats" class="section level3">
 <h3>Alternative network formats</h3>
@@ -416,8 +462,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <ul>
 <li>a sparse adjacency matrix, e.g.</li>
 </ul>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">library</span>(Matrix)</a>
-<a class="sourceLine" id="cb14-2" title="2"><span class="kw">as</span>(A, <span class="st">&#39;sparseMatrix&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">library</span>(Matrix)</span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="kw">as</span>(A, <span class="st">&#39;sparseMatrix&#39;</span>)</span></code></pre></div>
 <pre><code>## 7 x 7 sparse Matrix of class &quot;dgCMatrix&quot;
 ##   a b c d e f g
 ## a . 1 1 . . . .
@@ -452,24 +498,24 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="compute-the-test" class="section level3">
 <h3>Compute the test</h3>
 <p>Once you have prepared the lists of gene sets and the network, what you need is to run <code>neat</code>, without forgetting to specify the correct <code>nettype</code> (here <code>nettype = &#39;directed&#39;</code>) and the labels of nodes (here <code>nodes = labels</code>):</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">test1 =<span class="st"> </span><span class="kw">neat</span>(<span class="dt">alist =</span> alist, <span class="dt">blist =</span> blist, <span class="dt">network =</span> A, </a>
-<a class="sourceLine" id="cb17-2" title="2">             <span class="dt">nettype =</span> <span class="st">&#39;directed&#39;</span>, <span class="dt">nodes =</span> labels)</a>
-<a class="sourceLine" id="cb17-3" title="3"><span class="kw">print</span>(test1)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>test1 =<span class="st"> </span><span class="kw">neat</span>(<span class="dt">alist =</span> alist, <span class="dt">blist =</span> blist, <span class="dt">network =</span> A, </span>
+<span id="cb17-2"><a href="#cb17-2"></a>             <span class="dt">nettype =</span> <span class="st">&#39;directed&#39;</span>, <span class="dt">nodes =</span> labels)</span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="kw">print</span>(test1)</span></code></pre></div>
 <pre><code>##       A     B nab expected_nab     pvalue adjusted_p
 ## 1 set 1 set 3   0       0.3333 0.68181818 0.68181818
 ## 2 set 2 set 3   2       0.5000 0.04545455 0.09090909</code></pre>
 <p>If you want to add to the results a column specifying the conclusion of the test (overenrichment, no enrichment or underenrichment) for a given significance level, you use the option <code>alpha</code>. Note that the conclusion will obviously depend on the type of multiple correction you choose (compare test2 and test3 below):</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="co"># results using FDR correction (default since version 1.2.0)</span></a>
-<a class="sourceLine" id="cb19-2" title="2">test2 =<span class="st"> </span><span class="kw">neat</span>(<span class="dt">alist =</span> alist, <span class="dt">blist =</span> blist, <span class="dt">network =</span> A, </a>
-<a class="sourceLine" id="cb19-3" title="3">             <span class="dt">nettype =</span> <span class="st">&#39;directed&#39;</span>, <span class="dt">nodes =</span> labels, <span class="dt">alpha =</span> <span class="fl">0.05</span>, <span class="dt">mtc.type =</span> <span class="st">&#39;fdr&#39;</span>)</a>
-<a class="sourceLine" id="cb19-4" title="4"><span class="kw">print</span>(test2)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># results using FDR correction (default since version 1.2.0)</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>test2 =<span class="st"> </span><span class="kw">neat</span>(<span class="dt">alist =</span> alist, <span class="dt">blist =</span> blist, <span class="dt">network =</span> A, </span>
+<span id="cb19-3"><a href="#cb19-3"></a>             <span class="dt">nettype =</span> <span class="st">&#39;directed&#39;</span>, <span class="dt">nodes =</span> labels, <span class="dt">alpha =</span> <span class="fl">0.05</span>, <span class="dt">mtc.type =</span> <span class="st">&#39;fdr&#39;</span>)</span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="kw">print</span>(test2)</span></code></pre></div>
 <pre><code>##       A     B nab expected_nab     pvalue adjusted_p    conclusion
 ## 1 set 1 set 3   0       0.3333 0.68181818 0.68181818 No enrichment
 ## 2 set 2 set 3   2       0.5000 0.04545455 0.09090909 No enrichment</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="co"># results without multiple testing correction (mtc.type = &#39;none&#39;)</span></a>
-<a class="sourceLine" id="cb21-2" title="2">test3 =<span class="st"> </span><span class="kw">neat</span>(<span class="dt">alist =</span> alist, <span class="dt">blist =</span> blist, <span class="dt">network =</span> A, </a>
-<a class="sourceLine" id="cb21-3" title="3">             <span class="dt">nettype =</span> <span class="st">&#39;directed&#39;</span>, <span class="dt">nodes =</span> labels, <span class="dt">alpha =</span> <span class="fl">0.05</span>, <span class="dt">mtc.type =</span> <span class="st">&#39;none&#39;</span>)</a>
-<a class="sourceLine" id="cb21-4" title="4"><span class="kw">print</span>(test3)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># results without multiple testing correction (mtc.type = &#39;none&#39;)</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>test3 =<span class="st"> </span><span class="kw">neat</span>(<span class="dt">alist =</span> alist, <span class="dt">blist =</span> blist, <span class="dt">network =</span> A, </span>
+<span id="cb21-3"><a href="#cb21-3"></a>             <span class="dt">nettype =</span> <span class="st">&#39;directed&#39;</span>, <span class="dt">nodes =</span> labels, <span class="dt">alpha =</span> <span class="fl">0.05</span>, <span class="dt">mtc.type =</span> <span class="st">&#39;none&#39;</span>)</span>
+<span id="cb21-4"><a href="#cb21-4"></a><span class="kw">print</span>(test3)</span></code></pre></div>
 <pre><code>##       A     B nab expected_nab     pvalue adjusted_p     conclusion
 ## 1 set 1 set 3   0       0.3333 0.68181818 0.68181818  No enrichment
 ## 2 set 2 set 3   2       0.5000 0.04545455 0.04545455 Overenrichment</code></pre>

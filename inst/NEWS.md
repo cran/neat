@@ -1,3 +1,10 @@
+neat 1.2.3
+==========
+
+-   Added index to the Vignette and changed the VignetteIndexEntry
+-   Updated package URL in DESCRIPTION file
+-   Updated article URL in CITATION file
+
 neat 1.2.2
 ==========
 
