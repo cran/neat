@@ -1,8 +1,9 @@
 citHeader("To cite neat in publications use:")
 
-citEntry(entry = "Article",
+bibentry(
+  bibtype = "Article",
   title        = "NEAT: an efficient network enrichment analysis test",
-  author       = personList(as.person("M. Signorelli"),
+  author       = c(as.person("M. Signorelli"),
                    as.person("V. Vinciotti"),
                    as.person("E. C. Wit")),
   journal      = "BMC Bioinformatics",
